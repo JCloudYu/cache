@@ -19,16 +19,16 @@
 	<div id="notification" class="alert alert-info hidden"></div>
 
 	<main>
-		<div id="btnAdd" class="btn-add float-left noselect" title="新增一筆資料"><i class="fa fa-plus"></i></div>
+		<div id="btnAdd" class="btn-add float-left noselect" title="add a new record"><i class="fa fa-plus"></i></div>
 	</main>
 
 	<div id="dialogueDelete" class="dialogueShell middle-fixed hidden">
-		<div class="dialogue middle-fixed" h-max="150">
+		<div class="dialogue middle-fixed">
 			<i class="fa fa-close float-right"></i>
-			<div class="text-alert">是否要刪除此筆資料？</div>
+			<div class="text-alert">Are you sure you want to delete this record ?</div>
 			<div class="dialogue-footer">
-				<div class="btn-basic btn-color-danger noselect flex-1" data-confirm="yes">確認</div>
-				<div class="btn-basic btn-color-danger noselect flex-1" data-confirm="no">取消</div>
+				<div class="btn-basic btn-color-danger noselect flex-1" data-confirm="yes">Yes</div>
+				<div class="btn-basic btn-color-danger noselect flex-1" data-confirm="no">No</div>
 			</div>
 		</div>
 	</div>
@@ -131,7 +131,7 @@
 				noteInfo[ noteId ].title = textTitle.val();
 				noteInfo[ noteId ].description = textDescription.val();
 				setNoteInfo( noteInfo );
-				showNotification( "已成功儲存您紀錄的資訊！" );
+				showNotification( "Successfully store your record !" );
 			} );
 
 
@@ -204,11 +204,11 @@
 						if( css ) note.find( '.viewCSS').removeClass( 'hidden' );
 
 
-						showNotification( "已成功上傳更新檔案！" );
+						showNotification( "Successfully upload your files !" );
 					},
 					fail: function( e, data ){
 						console.log( data.errorThrown );
-						showNotification( "檔案上傳失敗！" );
+						showNotification( "Fail to upload ! Check the console log for more information !" );
 					}
 				});
 			} );
@@ -262,17 +262,17 @@
 			$( selector ).before(
 				'<div class="block-3 float-left" id="'+ noteId +'"> \
 					<div class="block-header"> \
-						<div class="icon float-right noselect viewJS ' + viewJS + '" title="查看 javascript 檔案內容"><i class="fa fa-file-code-o"></i><sub>js</sub></div> \
-						<div class="icon float-right noselect viewCSS ' + viewCSS + '" title="查看 css 檔案內容"><i class="fa fa-file-text-o"></i><sub>css</sub></div> \
-						<div class="icon float-right delete" title="刪除該筆資訊"><i class="fa fa-trash-o"></i></div> \
-						<input type="text" placeholder="標題" value="' + title + '"> \
+						<div class="icon float-right noselect viewJS ' + viewJS + '" title="view javascript content"><i class="fa fa-file-code-o"></i><sub>js</sub></div> \
+						<div class="icon float-right noselect viewCSS ' + viewCSS + '" title="view css content"><i class="fa fa-file-text-o"></i><sub>css</sub></div> \
+						<div class="icon float-right delete" title="delete this record"><i class="fa fa-trash-o"></i></div> \
+						<input type="text" placeholder="Title" value="' + title + '"> \
 					</div> \
 					<div class="block-body parent-fill fill-all">\
-						<textarea placeholder="可以在這裡寫下關於你上傳的 css 、 javascript 檔案相關資訊">' + description + '</textarea> \
+						<textarea placeholder="Write some information about your uploaded css or javascript files ...">' + description + '</textarea> \
 					</div> \
 					<div class="block-footer parent-fill fill-horizontally"> \
-						<div class="btn-basic update btn-color-danger noselect flex-1" title="儲存筆記內容">儲存編輯</div> \
-						<div class="btn-basic upload btn-color-danger noselect flex-1" title="點我上傳 css 或 javascript 檔案">檔案上傳<input class="parent-fill fill-all" type="file" name="files[]" multiple /></div> \
+						<div class="btn-basic update btn-color-danger noselect flex-1" title="store the content of this record">Store</div> \
+						<div class="btn-basic upload btn-color-danger noselect flex-1" title="upload css or javascript files">Upload<input class="parent-fill fill-all" type="file" name="files[]" multiple /></div> \
 					</div> \
 				</div>'
 			);
