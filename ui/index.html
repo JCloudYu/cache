@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/oops.css">
+	<link rel="stylesheet" href="css/button.css">
 	<link rel="stylesheet" href="css/style.css">
 
 	<script src="https://api.purimize.com/cache/lib/js/jquery,promise,moment,oops,oops.string,oops.util,oops.runtime,oops.net"></script>
@@ -20,23 +21,25 @@
 	<div id="notification" class="alert alert-info hidden"></div>
 
 	<main>
-		<div id="btnAdd" class="btn-add float-left" data-toggle="tooltip" title="新增一筆資料">+</div>
+		<div id="btnAdd" class="btn-add float-left noselect" title="新增一筆資料"><i class="fa fa-plus"></i></div>
 	</main>
 
-	<div id="dialogueDelete" class="dialogueShell middle-abs hidden">
-		<div class="dialogue middle-abs" h-max="150">
+	<div id="dialogueDelete" class="dialogueShell middle-fixed hidden">
+		<div class="dialogue middle-fixed" h-max="150">
 			<i class="fa fa-close float-right"></i>
-			<div class="text-alert">確定要刪除此筆資料？</div>
-			<div class="btn-basic" data-confirm="yes">確認刪除</div>
-			<div class="btn-basic" data-confirm="no">取消</div>
+			<div class="text-alert">是否要刪除此筆資料？</div>
+			<div class="dialogue-footer">
+				<div class="btn-basic btn-color-danger noselect flex-1" data-confirm="yes">確認</div>
+				<div class="btn-basic btn-color-danger noselect flex-1" data-confirm="no">取消</div>
+			</div>
 		</div>
 	</div>
 
 
-
 	<script>
-		const REMOTE_ADDR = "https://api.purimize.com/cache";
+		const REMOTE_ADDR = "http://api.purimize.com/cache/";
 
+		/* ISSUE: Remember to recover the relation for div (add nested div)  */
 		(function(){
 
 			if( typeof( Storage ) === "undefined" )
@@ -99,15 +102,15 @@
 
 			// INFO: View JS, CSS Code
 			$(document).on( 'click', '.viewJS', function(){
-				var noteId 		= $(this).parent().closest('div').attr('id');
+				var noteId 		= $(this).parent().parent().closest('div').attr('id');
 				var noteInfo 	= getNoteInfo();
-				window.open( REMOTE_ADDR + "/js/" + noteInfo[noteId].token );
+				window.open( REMOTE_ADDR + "js/" + noteInfo[noteId].token );
 			} );
 
 			$(document).on( 'click', '.viewCSS', function(){
-				var noteId 		= $(this).parent().closest('div').attr('id');
+				var noteId 		= $(this).parent().parent().closest('div').attr('id');
 				var noteInfo 	= getNoteInfo();
-				window.open( REMOTE_ADDR + "/css/" + noteInfo[noteId].token );
+				window.open( REMOTE_ADDR + "css/" + noteInfo[noteId].token );
 			} );
 
 
@@ -121,9 +124,10 @@
 
 			// INFO: Update Descriptions
 			$(document).on( 'click', '.update', function(){
-				var noteId 			= $(this).parent().closest( 'div' ).attr( 'id' );
-				var textTitle 		= $(this).siblings( 'input[type=text]' );
-				var textDescription = $(this).siblings( 'textarea' );
+				var note 			= $(this).parent().parent().closest( 'div' );
+				var noteId 			= note.attr( 'id' );
+				var textTitle 		= note.find( 'input[type=text]' );
+				var textDescription = note.find( 'textarea' );
 				var noteInfo 		= getNoteInfo();
 
 
@@ -156,19 +160,11 @@
 								css = true;
 						} );
 
-						var noteId = $(this).parent().closest('div').attr( 'id' ),
-							noteInfo = getNoteInfo()[ noteId ] || {},
-							infoCollect	= [ REMOTE_ADDR ];
+						var noteInfo 	= getNoteInfo();
+						var noteId 		= $(this).parent().parent().closest('div').attr( 'id' );
 
-						if ( $.trim( noteInfo.token ).length > 0 )
-							infoCollect.push( noteInfo.token );
-
-						if ( $.trim( noteInfo.secret ).length > 0 )
-							infoCollect.push( noteInfo.secret );
-
-
-
-						data.url = infoCollect.join( '/' );
+						noteInfo = noteInfo[noteId];
+						data.url = REMOTE_ADDR + ( noteInfo ? ( noteInfo.token + "/" + noteInfo.secret ): "" );
 						data.submit();
 					},
 					done: function( e, data ) {
@@ -184,7 +180,7 @@
 
 						// INFO: Store updated file information
 						var noteInfo 	= getNoteInfo();
-						var note 		= $(this).parent().closest('div');
+						var note 		= $(this).parent().parent().closest('div');
 						var noteId 		= note.attr( 'id' );
 
 						noteInfo[ noteId ].token 	= response.token;
@@ -195,8 +191,8 @@
 
 
 
-						if( js ) note.children( '.viewJS').removeClass( 'hidden' );
-						if( css ) note.children( '.viewCSS').removeClass( 'hidden' );
+						if( js ) note.find( '.viewJS').removeClass( 'hidden' );
+						if( css ) note.find( '.viewCSS').removeClass( 'hidden' );
 
 
 						showNotification( "已成功上傳更新檔案！" );
@@ -251,13 +247,19 @@
 
 			$( selector ).before(
 				'<div class="block-3 float-left" id="'+ noteId +'"> \
-					<div class="icon float-right viewJS ' + viewJS + '" data-toggle="tooltip" title="查看 javascript 檔案內容"><i class="fa fa-file-code-o"></i><sub>js</sub></div> \
-					<div class="icon float-right viewCSS ' + viewCSS + '" data-toggle="tooltip" title="查看 css 檔案內容"><i class="fa fa-file-text-o"></i><sub>css</sub></div> \
-					<div class="icon float-right delete" data-toggle="tooltip" title="刪除該筆資訊"><i class="fa fa-trash-o"></i></div> \
-					<input type="text" placeholder="標題" value="' + title + '"> \
-					<textarea placeholder="可以在這裡寫下關於你上傳的 css 、 javascript 檔案相關資訊">' + description + '</textarea> \
-					<div class="btn-basic update" data-toggle="tooltip" title="儲存筆記內容">儲存編輯</div> \
-					<div class="btn-basic upload" data-toggle="tooltip" title="點我上傳 css 或 javascript 檔案">檔案上傳<input type="file" name="files[]" multiple /></div> \
+					<div class="block-header"> \
+						<div class="icon float-right noselect viewJS ' + viewJS + '" title="查看 javascript 檔案內容"><i class="fa fa-file-code-o"></i><sub>js</sub></div> \
+						<div class="icon float-right noselect viewCSS ' + viewCSS + '" title="查看 css 檔案內容"><i class="fa fa-file-text-o"></i><sub>css</sub></div> \
+						<div class="icon float-right delete" title="刪除該筆資訊"><i class="fa fa-trash-o"></i></div> \
+						<input type="text" placeholder="標題" value="' + title + '"> \
+					</div> \
+					<div class="block-body parent-fill fill-all">\
+						<textarea placeholder="可以在這裡寫下關於你上傳的 css 、 javascript 檔案相關資訊">' + description + '</textarea> \
+					</div> \
+					<div class="block-footer parent-fill fill-horizontally"> \
+						<div class="btn-basic update btn-color-danger noselect flex-1" title="儲存筆記內容">儲存編輯</div> \
+						<div class="btn-basic upload btn-color-danger noselect flex-1" title="點我上傳 css 或 javascript 檔案">檔案上傳<input class="parent-fill fill-all" type="file" name="files[]" multiple /></div> \
+					</div> \
 				</div>'
 			);
 		}
@@ -286,7 +288,7 @@
 
 
 			btnYes.on( 'click', { selector: selector, confirm: confirm }, function( event ){
-				var note		= event.data.selector.parent().closest('div');
+				var note		= event.data.selector.parent().parent().closest('div');
 				var noteId 		= note.attr('id');
 				var noteInfo 	= getNoteInfo();
 
