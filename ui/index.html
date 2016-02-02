@@ -35,7 +35,7 @@
 
 
 	<script>
-		const REMOTE_ADDR = "http://api.purimize.com/cache/";
+		const REMOTE_ADDR = "https://api.purimize.com/cache";
 
 		(function(){
 
@@ -101,13 +101,13 @@
 			$(document).on( 'click', '.viewJS', function(){
 				var noteId 		= $(this).parent().parent().closest('div').attr('id');
 				var noteInfo 	= getNoteInfo();
-				window.open( REMOTE_ADDR + "js/" + noteInfo[noteId].token );
+				window.open( REMOTE_ADDR + "/js/" + noteInfo[noteId].token );
 			} );
 
 			$(document).on( 'click', '.viewCSS', function(){
 				var noteId 		= $(this).parent().parent().closest('div').attr('id');
 				var noteInfo 	= getNoteInfo();
-				window.open( REMOTE_ADDR + "css/" + noteInfo[noteId].token );
+				window.open( REMOTE_ADDR + "/css/" + noteInfo[noteId].token );
 			} );
 
 
@@ -148,20 +148,32 @@
 					singleFileUploads: false,
 					add: function( e, data )
 					{
+						js = css = false;
+
 						$.each( data.files, function( index, file ){
 
-							if( allowJS.test( file.name ) )
+							if( allowJS.test( file.name ) ) {
 								js = true;
+							}
 							else
-							if( allowCSS.test( file.name ) )
+							if( allowCSS.test( file.name ) ) {
 								css = true;
+							}
 						} );
 
-						var noteInfo 	= getNoteInfo();
-						var noteId 		= $(this).parent().parent().closest('div').attr( 'id' );
+						var noteId = $(this).parent().parent().closest('div').attr( 'id' ),
+							noteInfo = getNoteInfo()[ noteId ] || {},
+							infoCollect	= [ REMOTE_ADDR ];
 
-						noteInfo = noteInfo[noteId];
-						data.url = REMOTE_ADDR + ( noteInfo ? ( noteInfo.token + "/" + noteInfo.secret ): "" );
+						if ( $.trim( noteInfo.token ).length > 0 )
+							infoCollect.push( noteInfo.token );
+
+						if ( $.trim( noteInfo.secret ).length > 0 )
+							infoCollect.push( noteInfo.secret );
+
+
+
+						data.url = infoCollect.join( '/' );
 						data.submit();
 					},
 					done: function( e, data ) {
