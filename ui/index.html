@@ -4,14 +4,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Cache UI</title>
-	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/oops.css">
 	<link rel="stylesheet" href="css/button.css">
 	<link rel="stylesheet" href="css/style.css">
 
 	<script src="https://api.purimize.com/cache/lib/js/jquery,promise,moment,oops,oops.string,oops.util,oops.runtime,oops.net"></script>
-	<script src="js/bootstrap.min.js"></script>
 	<!--libraries: file Upload( jquery.ui.widget, jquery.iframe-transport, jquery.fileupload )-->
 	<script src="js/fileUpload.js"></script>
 
@@ -39,7 +37,6 @@
 	<script>
 		const REMOTE_ADDR = "http://api.purimize.com/cache/";
 
-		/* ISSUE: Remember to recover the relation for div (add nested div)  */
 		(function(){
 
 			if( typeof( Storage ) === "undefined" )
@@ -228,9 +225,14 @@
 			var notification = $( '#notification' );
 
 			notification.removeClass( 'hidden' )
-				.html( '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + msg)
+				.html( '<i class="fa fa-close float-right"></i>' + msg)
 				.fadeIn()
 				.fadeOut( 3000 );
+
+
+			notification.find( '.fa-close' ).on( 'click', { notification: notification }, function( event ){
+				event.data.notification.addClass( 'hidden' );
+			});
 
 		}
 
