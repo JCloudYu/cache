@@ -1,0 +1,189 @@
+* {
+	box-sizing: border-box;
+	font-family: cursive, Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "標楷體", DFKai-SB, sans-serif;;
+}
+
+body {
+	background: rgba( 0, 0, 0, 0.1 );
+}
+
+div {
+	margin: 10px;
+}
+
+main {
+	margin: 20px;
+}
+
+.block-3, .btn-add {
+	width: 250px;
+	height: 250px;
+	min-width: 250px;
+	min-height: 250px;
+	margin: 0 20px 20px 0;
+	padding: 25px 25px 40px;
+}
+
+.btn-add {
+	padding: 20px;
+	border-radius: 20px;
+	overflow: hidden;
+	cursor: pointer;
+	border: 15px solid rgba( 0, 0, 0, 0.1 );
+	color: rgba( 0, 0, 0, 0.1 );
+	font: 220px sans-serif;
+	font-weight: bold;
+	line-height: 185px;
+	text-align: center;
+	transition: .2s;
+}
+
+.btn-add:hover {
+	border-color: rgba( 0, 0, 0, 0.2 );
+	color: rgba( 0, 0, 0, 0.2 );
+}
+
+.btn-add:active {
+	box-shadow: 0 8px 16px 0 rgba( 0, 0, 0, 0.2 ), 0 6px 20px 0 rgba( 0, 0, 0, 0.19 );
+}
+
+.block-3 {
+	position: relative;
+	box-shadow: 0 4px 8px 0 rgba( 0, 0, 0, 0.2 ), 0 6px 20px 0 rgba( 0, 0, 0, 0.19 );
+	background: linear-gradient( #ffeb3b, #F7E98D );
+	text-align: center;
+}
+
+textarea {
+	width: 100%;
+	height: 60%;
+	min-height: 50px;
+	border: none;
+	resize: none;
+	margin: 15px 0 10px 0;
+	overflow: hidden;
+	background-color: inherit;
+}
+
+input[ type="text" ] {
+	border: 0px;
+	width: 100%;
+	font-size: 125%;
+	background-color: inherit;
+}
+
+.icon {
+	position: absolute;
+	color: #033649;
+	font-size: 130%;
+	cursor: pointer;
+}
+
+.delete {
+	margin: -23px 0;
+	right: 3px;
+}
+
+.fa-close:hover {
+	color: white;
+	cursor: pointer;
+}
+
+.viewCSS {
+	margin: -20px 0;
+	right: 20px;
+	font-size: 110%;
+}
+
+.viewJS {
+	margin: -20px 20px;
+	right: 35px;
+	font-size: 110%;
+}
+
+.viewJS > sub, .viewCSS > sub {
+	font-size: 50%;
+}
+
+.btn-basic {
+	border: none;
+	border-radius: 8px;
+	padding: 6px 16px;
+	display: inline-block;
+	margin: auto;
+	overflow: hidden;
+	text-decoration: none !important;
+	color: #000;
+	background-color: #fff;
+	text-align: center;
+	transition: .2s ease-out;
+	cursor: pointer;
+	white-space: nowrap;
+	box-shadow: 3px 8px 10px 0 rgba( 0, 0, 0, 0.2 ), 2px 6px 10px 0 rgba( 0, 0, 0, 0.19 );
+}
+
+.btn-basic:hover {
+	background-color: #eee;
+	transition: .2s ease-out;
+}
+
+.btn-basic:active {
+	background-color: #ddd;
+	box-shadow: 1px 5px 5px 0 rgba( 0, 0, 0, 0.2 ), 0 4px 5px 0 rgba( 0, 0, 0, 0.19 );
+}
+
+
+.upload {
+	overflow: hidden;
+	position: relative;
+}
+
+.upload > input[type=file] {
+	position: absolute;
+	opacity: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+.dialogueShell {
+	width: 100%;
+	height: 100%;
+	background-color: rgba( 25, 25, 80, 0.5 );
+}
+
+.dialogue {
+	padding: 15px;
+	width: 20vw;
+	height: 30vw;
+	min-width: 250px;
+	min-height: 150px;
+	background-color: rgba( 150, 150, 255, 0.95 );
+	border-radius: 10px;
+	box-shadow: 5px 5px 10px 1px rgba( 0, 0, 0, 0.9 );
+	overflow: auto;
+	text-align: center;
+}
+
+.text-alert {
+	padding: 10px;
+	line-height: 30px;
+}
+
+
+.dialogue[h-max="150"] {
+	max-height: 150px;
+}
+
+#notification {
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 20vw;
+	min-width: 200px;
+	z-index: 1;
+}
+
+/* INFO: Alignment */
+.middle-abs { position: absolute; margin: auto; top: 0; bottom: 0; left: 0; right: 0;}

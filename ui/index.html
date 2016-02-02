@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" class="viewport-fill fill-all">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Cache UI</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/oops.css">
+	<link rel="stylesheet" href="css/style.css">
+
+	<script src="https://api.purimize.com/cache/lib/js/jquery,promise,moment,oops,oops.string,oops.util,oops.runtime,oops.net"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<!--libraries: file Upload( jquery.ui.widget, jquery.iframe-transport, jquery.fileupload )-->
+	<script src="js/fileUpload.js"></script>
+
+</head>
+<body class="scroll-all">
+
+	<div id="notification" class="alert alert-info hidden"></div>
+
+	<main>
+		<div id="btnAdd" class="btn-add float-left" data-toggle="tooltip" title="新增一筆資料">+</div>
+	</main>
+
+	<div id="dialogueDelete" class="dialogueShell middle-abs hidden">
+		<div class="dialogue middle-abs" h-max="150">
+			<i class="fa fa-close float-right"></i>
+			<div class="text-alert">確定要刪除此筆資料？</div>
+			<div class="btn-basic" data-confirm="yes">確認刪除</div>
+			<div class="btn-basic" data-confirm="no">取消</div>
+		</div>
+	</div>
+
+
+
+	<script>
+		const REMOTE_ADDR = "http://api.purimize.com/cache/";
+
+		(function(){
+
+			if( typeof( Storage ) === "undefined" )
+			{
+				alert( "Sorry, your browser doesn't support web storage !" );
+				return;
+			}
+
+
+
+			// INFO: Display original stored notes
+			showStoredNotes();
+
+
+
+			// INFO: Add a new note
+			var btnAdd 	= $( "#btnAdd" );
+
+			btnAdd.on( "click", function(){
+
+				// INFO: Generate unique id
+				if( !localStorage.noteId )
+					localStorage.noteId = 1;
+				else
+					localStorage.noteId++;
+
+
+
+				var noteId = 'noteId' + localStorage.noteId;
+
+				var defaultNoteInfo = {
+					"title"			: "",
+					"description"	: "",
+					"token"			: "",
+					"secret"		: "",
+					"js"			: false,
+					"css"			: false
+				};
+				var noteInfo = {};
+
+				addNewNote( $(this), noteId, defaultNoteInfo );
+
+
+				// INFO: Store note information to local storage
+				if( !localStorage.noteInfo )
+				{
+					noteInfo[ noteId ] = defaultNoteInfo;
+					setNoteInfo( noteInfo );
+				}
+				else
+				{
+					noteInfo = getNoteInfo();
+					noteInfo[ noteId ] = defaultNoteInfo;
+					setNoteInfo( noteInfo );
+				}
+
+			});
+
+
+
+			// INFO: View JS, CSS Code
+			$(document).on( 'click', '.viewJS', function(){
+				var noteId 		= $(this).parent().closest('div').attr('id');
+				var noteInfo 	= getNoteInfo();
+				window.open( REMOTE_ADDR + "js/" + noteInfo[noteId].token );
+			} );
+
+			$(document).on( 'click', '.viewCSS', function(){
+				var noteId 		= $(this).parent().closest('div').attr('id');
+				var noteInfo 	= getNoteInfo();
+				window.open( REMOTE_ADDR + "css/" + noteInfo[noteId].token );
+			} );
+
+
+
+			// INFO: Delete Note
+			$(document).on( 'click', '.delete', function(){
+				deleteDialogue( $(this) );
+			} );
+
+
+
+			// INFO: Update Descriptions
+			$(document).on( 'click', '.update', function(){
+				var noteId 			= $(this).parent().closest( 'div' ).attr( 'id' );
+				var textTitle 		= $(this).siblings( 'input[type=text]' );
+				var textDescription = $(this).siblings( 'textarea' );
+				var noteInfo 		= getNoteInfo();
+
+
+				noteInfo[ noteId ].title = textTitle.val();
+				noteInfo[ noteId ].description = textDescription.val();
+				setNoteInfo( noteInfo );
+				showNotification( "已成功儲存您紀錄的資訊！" );
+			} );
+
+
+
+			// INFO: Update Files
+			var js 	= false;
+			var css = false;
+			var allowJS 	= /\.(js)$/;
+			var allowCSS 	= /\.(css)$/;
+
+			$(document).on( 'click', '.upload', function(){
+				$(this).fileupload({
+					dataType: 'json',
+					singleFileUploads: false,
+					add: function( e, data )
+					{
+						$.each( data.files, function( index, file ){
+
+							if( allowJS.test( file.name ) )
+								js = true;
+							else
+							if( allowCSS.test( file.name ) )
+								css = true;
+						} );
+
+						var noteInfo 	= getNoteInfo();
+						var noteId 		= $(this).parent().closest('div').attr( 'id' );
+
+						noteInfo = noteInfo[noteId];
+						data.url = REMOTE_ADDR + ( noteInfo ? ( noteInfo.token + "/" + noteInfo.secret ): "" );
+						data.submit();
+					},
+					done: function( e, data ) {
+						var response = data.result;
+
+						if( response.status != 0 )
+						{
+							console.log( response.msg );
+							showNotification( response.msg );
+							return;
+						}
+
+
+						// INFO: Store updated file information
+						var noteInfo 	= getNoteInfo();
+						var note 		= $(this).parent().closest('div');
+						var noteId 		= note.attr( 'id' );
+
+						noteInfo[ noteId ].token 	= response.token;
+						noteInfo[ noteId ].secret 	= response.secret;
+						noteInfo[ noteId ].js 		= js;
+						noteInfo[ noteId ].css 		= css;
+						setNoteInfo( noteInfo );
+
+
+
+						if( js ) note.children( '.viewJS').removeClass( 'hidden' );
+						if( css ) note.children( '.viewCSS').removeClass( 'hidden' );
+
+
+						showNotification( "已成功上傳更新檔案！" );
+					},
+					fail: function( e, data ){
+						console.log( data.errorThrown );
+						showNotification( "檔案上傳失敗！" );
+					}
+				});
+			} );
+		})();
+
+
+
+		function showStoredNotes()
+		{
+			if( !localStorage.noteInfo ) return;
+
+
+
+			var noteInfo 	= getNoteInfo();
+			var btnAdd 		= $( "#btnAdd" );
+
+			for( var noteId in noteInfo )
+			{
+				addNewNote( btnAdd, noteId, noteInfo[noteId] );
+			}
+		}
+
+
+		function showNotification( msg )
+		{
+			var notification = $( '#notification' );
+
+			notification.removeClass( 'hidden' )
+				.html( '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + msg)
+				.fadeIn()
+				.fadeOut( 3000 );
+
+		}
+
+		function addNewNote( selector, noteId, noteIdInfo )
+		{
+			if( !noteIdInfo ) return;
+
+
+
+			var title 		= noteIdInfo.title;
+			var description = noteIdInfo.description;
+			var viewJS		= noteIdInfo.js ? "": "hidden";
+			var viewCSS		= noteIdInfo.css ? "": "hidden";
+
+			$( selector ).before(
+				'<div class="block-3 float-left" id="'+ noteId +'"> \
+					<div class="icon float-right viewJS ' + viewJS + '" data-toggle="tooltip" title="查看 javascript 檔案內容"><i class="fa fa-file-code-o"></i><sub>js</sub></div> \
+					<div class="icon float-right viewCSS ' + viewCSS + '" data-toggle="tooltip" title="查看 css 檔案內容"><i class="fa fa-file-text-o"></i><sub>css</sub></div> \
+					<div class="icon float-right delete" data-toggle="tooltip" title="刪除該筆資訊"><i class="fa fa-trash-o"></i></div> \
+					<input type="text" placeholder="標題" value="' + title + '"> \
+					<textarea placeholder="可以在這裡寫下關於你上傳的 css 、 javascript 檔案相關資訊">' + description + '</textarea> \
+					<div class="btn-basic update" data-toggle="tooltip" title="儲存筆記內容">儲存編輯</div> \
+					<div class="btn-basic upload" data-toggle="tooltip" title="點我上傳 css 或 javascript 檔案">檔案上傳<input type="file" name="files[]" multiple /></div> \
+				</div>'
+			);
+		}
+
+		function getNoteInfo()
+		{
+			if( localStorage.noteInfo )
+				return $.parseJSON( localStorage.noteInfo );
+
+			return {};
+		}
+
+		function setNoteInfo( noteInfo )
+		{
+			localStorage.noteInfo = JSON.stringify( noteInfo );
+		}
+
+		function deleteDialogue( selector )
+		{
+			var confirm 	= $('#dialogueDelete');
+			var btnYes 		= confirm.children().find( '[data-confirm=yes]' );
+			var btnNo 		= confirm.children().find( '[data-confirm=no]' );
+			var btnClose 	= $( '.fa-close' );
+
+			confirm.removeClass( 'hidden' );
+
+
+			btnYes.on( 'click', { selector: selector, confirm: confirm }, function( event ){
+				var note		= event.data.selector.parent().closest('div');
+				var noteId 		= note.attr('id');
+				var noteInfo 	= getNoteInfo();
+
+				note.remove();
+				delete noteInfo[ noteId ];
+				setNoteInfo( noteInfo );
+
+
+				event.data.confirm.addClass( 'hidden' );
+
+			} );
+
+			btnNo.on( 'click', function(){
+				confirm.addClass( 'hidden' );
+			} );
+
+			btnClose.on( 'click', function(){
+				confirm.addClass( 'hidden' );
+			} );
+
+		}
+
+	</script>
+
+
+</body>
+</html>
