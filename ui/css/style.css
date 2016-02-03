@@ -1,16 +1,7 @@
-* {
-	box-sizing: border-box;
-	font-family: cursive, Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "標楷體", DFKai-SB, sans-serif;
-}
+* { box-sizing: border-box; }
+body { background: radial-gradient( #476173 0%, #000000 100% ); }
 
-body {
-	background: radial-gradient( #476173 0%, #000000 100% );
-}
-
-main {
-	margin: 20px;
-	text-align: center;
-}
+main { margin: 20px; text-align: center; }
 
 .block-3, .btn-add {
 	width: 250px;
