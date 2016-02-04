@@ -272,7 +272,7 @@
 				console.log( data.errorThrown );
 				showNotification( "Fail to upload ! Check the console log for more information !" );
 			}
-		} ).trigger( 'click' );
+		}).trigger( 'click' );
 	}
 })();
 
