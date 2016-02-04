@@ -261,6 +261,8 @@
 				extStorage( 'repo.' + repoInfo['rId'], repoInfo );
 
 
+				MAIN_CONTAINER.find( '[data-role="repo-item"][data-rel="' + repoInfo['rId'] + '"] .viewJS'  ).addClass( 'hidden' );
+				MAIN_CONTAINER.find( '[data-role="repo-item"][data-rel="' + repoInfo['rId'] + '"] .viewCSS' ).addClass( 'hidden' );
 
 				if( js  ) MAIN_CONTAINER.find( '[data-role="repo-item"][data-rel="' + repoInfo['rId'] + '"] .viewJS'  ).removeClass( 'hidden' );
 				if( css ) MAIN_CONTAINER.find( '[data-role="repo-item"][data-rel="' + repoInfo['rId'] + '"] .viewCSS' ).removeClass( 'hidden' );
