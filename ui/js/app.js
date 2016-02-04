@@ -84,11 +84,11 @@
 		switch ( target.attr( 'data-id' ) )
 		{
 			case "btnViewJS":
-				window.open( REMOTE_ADDR + "/js/" + repoInfo.token );
+				if ( repoInfo.js ) window.open( REMOTE_ADDR + "/js/" + repoInfo.token );
 				break;
 
 			case "btnViewCSS":
-				window.open( REMOTE_ADDR + "/css/" + repoInfo.token );
+				if ( repoInfo.css ) window.open( REMOTE_ADDR + "/css/" + repoInfo.token );
 				break;
 
 			case "btnDelete":
@@ -179,28 +179,22 @@
 		}
 	}
 	function showNotification( msg ) {
-
 		var notification = $( '#notification' );
 
+		$(notification.children()[0]).html( msg );
+
 		notification.removeClass( 'hidden' )
-			.html( '<i class="fa fa-close float-right"></i>' + msg)
-			.fadeIn()
-			.fadeOut( 3000 );
-
-
-		notification.find( '.fa-close' ).on( 'click', { notification: notification }, function( event ){
-			event.data.notification.addClass( 'hidden' );
-		});
-
+		.fadeIn()
+		.fadeOut( 3000 );
 	}
 	function addNewNote( noteId, noteIdInfo ) {
 		$.tmpl( ITEM_TPL, {
 			noteId: noteId,
 			title: noteIdInfo.title,
 			description: noteIdInfo.description,
-			hideJS: !noteIdInfo.js,
-			hideCSS: !noteIdInfo.css
-		}).insertAfter( INSERT_ANCHOR );
+			hasJS: !!noteIdInfo.js,
+			hasCSS: !!noteIdInfo.css
+		}).insertAfter( INSERT_ANCHOR ).fadeIn( 1000 );
 	}
 	function deleteDialogue( repoId ) {
 		DELETE_CONFIRM.attr( 'data-repo-id', repoId ).removeClass( 'hidden' );
@@ -262,8 +256,21 @@
 
 
 
-				if( js  ) MAIN_CONTAINER.find( '[data-role="repo-item"][data-rel="' + repoInfo['rId'] + '"] .viewJS'  ).removeClass( 'hidden' );
-				if( css ) MAIN_CONTAINER.find( '[data-role="repo-item"][data-rel="' + repoInfo['rId'] + '"] .viewCSS' ).removeClass( 'hidden' );
+				var op,
+				item	= MAIN_CONTAINER.find( '[data-role="repo-item"][data-rel="' + repoInfo['rId'] + '"]' ),
+				addOp	= item.addClass,
+				rmOp	= item.removeClass;
+
+
+				// INFO: Toggle class "has-js"
+				op = ( js ) ? addOp : rmOp;
+				op.call( item, 'has-js' );
+
+
+				// INFO: Toggle class "has-css"
+				op = ( css ) ? addOp : rmOp;
+				op.call( item, 'has-css' );
+
 
 
 				showNotification( "Successfully upload your files !" );

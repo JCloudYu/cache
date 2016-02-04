@@ -9,18 +9,17 @@
 	<link rel="stylesheet" href="css/style.css" />
 </head>
 <body class="scroll-all">
-	<div id="notification" class="alert alert-info hidden"></div>
 	<main class="clearfix">
 		<div id="btnAdd" class="btn-add float-left noselect" title="add a new record"><span class="oops-plus"></span></div>
 	</main>
 	<div class="hidden"><input id="fileUpload" class="parent-fill fill-all" type="file" name="files[]" multiple /></div>
-	<div id="dialogueDelete" class="dialogueShell middle-fixed hidden">
-		<div class="dialogue middle-fixed">
-			<span class="oops-cross float-right"></span>
-			<div class="text-alert">Are you sure you want to delete this record ?</div>
+	<div id="notification" class="v-center t-center hidden"><div></div></div>
+	<div id="dialogueDelete" class="v-center t-center hidden">
+		<div>
+			<div class="text-alert">Are you sure you want to delete this repo?</div>
 			<div class="dialogue-footer">
-				<div class="btn-basic btn-color-danger noselect flex-1" data-confirm="yes">Yes</div>
-				<div class="btn-basic btn-color-danger noselect flex-1" data-confirm="no">No</div>
+				<button class="btn-basic btn-color-danger" data-confirm="yes">Yes</button>
+				<button class="btn-basic btn-color-danger" data-confirm="no">No</button>
 			</div>
 		</div>
 	</div>
@@ -28,19 +27,23 @@
 
 
 	<script data-tpl="tile" type="text/html">
-		<div data-role="repo-item" data-rel="${noteId}" class="block-3 float-left">
-			<div class="block-header">
-				<div data-behavior="item-proc" data-id="btnViewJS" data-rel="${noteId}" class="icon float-right noselect viewJS {{if hideJS }}hidden{{/if}}" title="view javascript content">js</div>
-				<div data-behavior="item-proc" data-id="btnViewCSS" data-rel="${noteId}" class="icon float-right noselect viewCSS {{if hideCSS }}hidden{{/if}}" title="view css content">css</div>
-				<div data-behavior="item-proc" data-id="btnDelete" data-rel="${noteId}" class="icon float-right delete" title="delete this record"><span class="oops-trash"></span></div>
-				<input type="text" placeholder="Title" value="${title}">
+		<div data-role="repo-item" data-rel="${noteId}" class="repo-item float-left {{if hasJS}}has-js{{/if}} {{if hasCSS}}has-css{{/if}}">
+			<div class="item-header">
+				<input type="text" placeholder="title..." value="${title}" />
 			</div>
-			<div class="block-body parent-fill fill-all">
-				<textarea placeholder="Write some information about your uploaded css or javascript files ...">{{html description}}</textarea>
+			<div class="item-body">
+				<textarea placeholder="descriptions...">{{html description}}</textarea>
 			</div>
-			<div class="block-footer parent-fill fill-horizontally">
-				<div data-behavior="item-proc" data-id="btnContextUpdate" data-rel="${noteId}" class="btn-basic update btn-color-danger noselect flex-1" title="store the content of this record">Store</div>
-				<div data-behavior="item-proc" data-id="btnFileUpload" data-rel="${noteId}" class="btn-basic upload btn-color-danger noselect flex-1" title="upload css or javascript files">Upload</div>
+			<div class="item-footer clearfix">
+				<div data-rel="${noteId}" data-behavior="item-proc" data-id="btnContextUpdate"	class="op-item" title="Save Descriptions">
+					<span class="oops-document"></span>
+				</div>
+				<div data-rel="${noteId}" data-behavior="item-proc" data-id="btnFileUpload"		class="op-item" title="Update Repo Files">
+					<span class="oops-upload"></span>
+				</div>
+				<div data-rel="${noteId}" data-behavior="item-proc" data-id="btnViewJS"			class="op-item js-item" title="View JS">js</div>
+				<div data-rel="${noteId}" data-behavior="item-proc" data-id="btnViewCSS"		class="op-item css-item" title="View CSS">css</div>
+				<div data-rel="${noteId}" data-behavior="item-proc" data-id="btnDelete"			class="op-item op-delete"><span class="oops-trash"></span></div>
 			</div>
 		</div>
 	</script>
