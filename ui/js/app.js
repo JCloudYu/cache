@@ -63,16 +63,15 @@
 
 
 
+	// region [ Global constants ]
 	var
-	// INFO: Global constants
 	REMOTE_ADDR 	= "https://api.purimize.com/cache",
 	ITEM_TPL		= $( '[data-tpl="tile"]' ).html(),
 	MAIN_CONTAINER	= $( 'main' ),
 	INSERT_ANCHOR	= $( MAIN_CONTAINER.children()[0] ),
 	DELETE_CONFIRM	= $( '#dialogueDelete' ),
 	GLOBAL_UPLOADER	= $( '#fileUpload' );
-
-
+	// endregion
 
 	// region [ Hook main item events ]
 	MAIN_CONTAINER.on( 'click', '[data-behavior="item-proc"]', function( e ){
@@ -158,26 +157,38 @@
 	})();
 	// endregion
 
+	(function(){
+		var
+		windowObj	= $( window ),
+		windowSize	= null;
+
+		windowObj.resize(function(){
+			windowSize	= {
+				width: windowObj.width(),
+				height: windowObj.width()
+			};
+
+			MAIN_CONTAINER.css({
+				width: ((windowSize.width / 322) | 0) * 322,
+				visibility: "visible"
+			});
+		}).trigger( 'resize' );
+	})();
 
 
-
-
-
-
-
-
-
-	// INFO: Display original stored notes
-	showStoredNotes();
-
-	function showStoredNotes() {
+	// region [ Display Existing Repos ]
+	(function() {
 		var repoTrunk = extStorage( 'repo' );
 		for( var repoId in repoTrunk )
 		{
 			if ( !repoTrunk.hasOwnProperty( repoId ) ) continue;
 			addNewNote( repoId, repoTrunk[repoId] );
 		}
-	}
+	})();
+	// endregion
+
+
+
 	function showNotification( msg ) {
 		var notification = $( '#notification' );
 

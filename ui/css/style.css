@@ -1,5 +1,5 @@
 body { background:#E7EBEE; color:#767C8B; }
-main { margin:10px; }
+main { margin:10px auto; }
 
 .repo-item {
 	overflow:hidden;
