@@ -1,14 +1,81 @@
 * { box-sizing: border-box; }
-body { background: radial-gradient( #476173 0%, #000000 100% ); }
 
 main { margin: 20px; text-align: center; }
 
-.block-3, .btn-add {
+body { background: white; width: 100%; height: 100%; }
+
+.main { position: relative; margin: 20px; display: inline-block; }
+
+.note {
+	/*margin: 0 20px 20px 0;*/
 	width: 250px;
 	height: 250px;
 	min-width: 250px;
 	min-height: 250px;
-	margin: 0 20px 20px 0;
+	max-width: 250px;
+	max-height: 250px;
+	background: #eee;
+	border-radius: 10px;
+}
+
+
+.note .note-header {
+	position: absolute;
+	top: 0px;
+	width: inherit;
+	height: 50px;
+	background-color: #2e3d5c;
+	border-radius: 10px 10px 0 0;
+	text-align: center;
+	line-height: 50px;
+	color: white;
+}
+
+
+.note .note-body {
+	position: absolute;
+	top: 50px;
+	left: 0px;
+	text-align: center;
+	width: 250px;
+	height: 150px;
+	background-color: #eee;
+	overflow: hidden;
+	padding: 10px;
+}
+
+.note .note-footer {
+	position: absolute;
+	display: flex;
+	overflow: hidden;
+	bottom: 0;
+	width: inherit;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
+	color: black;
+	background-color: #2e3d5c;
+	border-radius: 0 0 10px 10px;
+}
+
+.note .note-footer span {
+	flex: 1;
+	margin: 0 5px;
+	color: white;
+	cursor: pointer;
+}
+
+.note .note-footer span:hover {
+	background-color: #acd15f;
+}
+
+
+.btn-add {
+	width: 250px;
+	height: 250px;
+	min-width: 250px;
+	min-height: 250px;
+	margin: 20px;
 }
 
 .btn-add {
@@ -16,85 +83,57 @@ main { margin: 20px; text-align: center; }
 	cursor: pointer;
 	border-radius: 20px;
 	font: 220px sans-serif;
-	line-height: 255px;
+	line-height: 250px;
 	text-align: center;
-	background: transparent;
-	color: rgba( 255, 253, 239, 0.2 );
-	text-shadow: 10px 10px 10px rgba( 0, 0, 0, 0.1 );
-	box-shadow: 0 6px 16px 0 rgba( 0, 0, 0, 0.2 ), 0 8px 20px 0 rgba( 0, 0, 0, 0.19 );
-	transition: color 250ms;
+	background: #2e3d5c;
+	color: white;
 }
 
 .btn-add:hover {
-	color: rgba( 255, 253, 239, 0.6 );
-	text-shadow: 0 0 1px rgba( 255, 255, 255, 0.3 );
-	background: rgba( 255, 253, 239, 0.1 );
-	box-shadow: 0 10px 18px 1px rgba( 0, 0, 0, 0.2 ), 0 12px 22px 1px rgba( 0, 0, 0, 0.19 );
+	background: #acd15f;
 }
 
 .btn-add:active {
-	text-shadow: 0 0 1px rgba( 255, 255, 255, 0.7 );
-	background: rgba( 255, 253, 239, 0.1 );
-	box-shadow: 0 2px 8px 0 rgba( 0, 0, 0, 0.2 ), 0 4px 12px 0 rgba( 0, 0, 0, 0.19 );
-	color: #fffdef;
-}
-
-.block-3 {
-	padding: 20px 25px 20px;
-	position: relative;
-	box-shadow: 0 4px 8px 0 rgba( 0, 0, 0, 0.2 ), 0 6px 20px 0 rgba( 0, 0, 0, 0.19 );
-	text-align: center;
-	background: #f9f9f9;
-}
-
-.block-header {
-	margin: auto;
-	border-bottom: 0.25em solid #d9453f;
-	padding-bottom: 0.5em;
-	height: 50px;
-	min-height: 50px;
-}
-
-.block-body {
-
-}
-
-.block-footer {
-	position: absolute;
-	display: flex;
-	left: 0;
-	bottom: 20px;
-	padding: 0 25px 0 25px;
-	height: 50px;
-	text-align: center;
+	background: #acd15f;
 }
 
 button, input, select, textarea {
 	font-family: inherit;
 	font-size: inherit;
+	color: inherit;
 }
 
 textarea {
+	position: absolute;
+	top: 10px;
+	right: 0;
+	left: 0;
+	bottom: 10px;
+	box-sizing: border-box;
 	width: 100%;
-	height: 40%;
-	min-height: 50px;
+	height: 80%;
 	border: none;
 	resize: none;
-	margin: 15px 0 15px 0;
+	margin: auto;
 	overflow: hidden;
 	background-color: inherit;
-	color: #333;
+	color: black;
+	line-height: 1.2rem;
+	padding: 10px;
 }
+
 
 input[ type="text" ] {
 	margin-top: 5px;
 	border: 0;
-	width: 100%;
+	width: 80%;
 	font-size: 1.25rem;
 	background-color: inherit;
-	color: #d9453f;
 	text-shadow: 1px 1px rgba( 59, 1, 1, 0.2 );
+	text-align: center;
 }
+
+
 
 .icon {
 	position: absolute;
@@ -125,21 +164,10 @@ input[ type="text" ] {
 	cursor: pointer;
 }
 
-.viewCSS {
-	margin: -16px 0;
-	right: 20px;
-	font-size: 1.1em;
-}
+.viewCSS { }
 
-.viewJS {
-	margin: -16px 20px;
-	right: 35px;
-	font-size: 1.1em;
-}
+.viewJS { }
 
-.viewJS > sub, .viewCSS > sub {
-	font-size: 0.5em;
-}
 
 .btn-basic[data-confirm="yes"] {
 	margin: 0 20px 0 0;
@@ -165,6 +193,7 @@ input[ type="text" ] {
 	left: calc( 250px / 2 + 5px / 2 );
 }
 
+
 .dialogueShell {
 	width: 100%;
 	height: 100%;
@@ -173,6 +202,7 @@ input[ type="text" ] {
 }
 
 .dialogue {
+
 	padding: 15px;
 	width: 60vw;
 	min-width: 250px;
