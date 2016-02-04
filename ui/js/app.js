@@ -160,9 +160,25 @@
 	(function(){
 		var
 		windowObj	= $( window ),
-		windowSize	= null;
+		windowSize	= null,
+		timeoutId	= null;
+
 
 		windowObj.resize(function(){
+			if ( timeoutId )
+				clearTimeout( timeoutId );
+
+			timeoutId = setTimeout(function(){
+				timeoutId = null;
+				___DO_RESIZE();
+			}, 50);
+		});
+
+		___DO_RESIZE();
+
+
+
+		function ___DO_RESIZE(){
 			windowSize	= {
 				width: windowObj.width(),
 				height: windowObj.width()
@@ -172,7 +188,7 @@
 				width: ((windowSize.width / 322) | 0) * 322,
 				visibility: "visible"
 			});
-		}).trigger( 'resize' );
+		}
 	})();
 
 
