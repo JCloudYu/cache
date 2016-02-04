@@ -33,17 +33,17 @@
 	<script data-tpl="tile" type="text/html">
 		<div class="block-3 float-left" id="${noteId}">
 			<div class="block-header">
-				<div class="icon float-right noselect viewJS {{if $hasJS }}hidden{{/if}}" title="view javascript content">js</div>
-				<div class="icon float-right noselect viewCSS {{if $hasCSS }}hidden{{/if}}" title="view css content">css</div>
-				<div class="icon float-right delete" title="delete this record"><span class="oops-trash"></span></div>
+				<div data-behavior="item-proc" data-id="btnViewJS" class="icon float-right noselect viewJS {{if $hasJS }}hidden{{/if}}" title="view javascript content">js</div>
+				<div data-behavior="item-proc" data-id="btnViewCSS" class="icon float-right noselect viewCSS {{if $hasCSS }}hidden{{/if}}" title="view css content">css</div>
+				<div data-behavior="item-proc" data-id="btnDelete" class="icon float-right delete" title="delete this record"><span class="oops-trash"></span></div>
 				<input type="text" placeholder="Title" value="${title}">
 			</div>
 			<div class="block-body parent-fill fill-all">
 				<textarea placeholder="Write some information about your uploaded css or javascript files ...">{{html description}}</textarea>
 			</div>
 			<div class="block-footer parent-fill fill-horizontally">
-				<div class="btn-basic update btn-color-danger noselect flex-1" title="store the content of this record">Store</div>
-				<div class="btn-basic upload btn-color-danger noselect flex-1" title="upload css or javascript files">Upload<input class="parent-fill fill-all" type="file" name="files[]" multiple /></div>
+				<div data-behavior="item-proc" data-id="btnContextUpdate" class="btn-basic update btn-color-danger noselect flex-1" title="store the content of this record">Store</div>
+				<div data-behavior="item-proc" data-id="btnFileUpload" class="btn-basic upload btn-color-danger noselect flex-1" title="upload css or javascript files">Upload<input class="parent-fill fill-all" type="file" name="files[]" multiple /></div>
 			</div>
 		</div>
 	</script>
