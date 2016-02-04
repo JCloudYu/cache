@@ -255,6 +255,8 @@
 				extStorage( 'repo.' + repoInfo['rId'], repoInfo );
 
 
+				MAIN_CONTAINER.find( '[data-role="repo-item"][data-rel="' + repoInfo['rId'] + '"] .viewJS'  ).addClass( 'hidden' );
+				MAIN_CONTAINER.find( '[data-role="repo-item"][data-rel="' + repoInfo['rId'] + '"] .viewCSS' ).addClass( 'hidden' );
 
 				var op,
 				item	= MAIN_CONTAINER.find( '[data-role="repo-item"][data-rel="' + repoInfo['rId'] + '"]' ),

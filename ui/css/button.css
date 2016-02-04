@@ -13,15 +13,18 @@
 	color: #fff;
 	background-color: #D9453F;
 	text-shadow: 1px 1px rgba( 59, 1, 1, 0.5 );
-	transition: .2s ease-out;
 	white-space: nowrap;
 	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
 	cursor: pointer;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .btn-basic:hover {
 	background-color: #eee;
-	transition: .2s ease-out;
 }
 
 .btn-basic:active {
@@ -51,4 +54,12 @@
 	color: #ffffff;
 	background-color: #ac2925;
 	border-color: #761c19;
+}
+
+.btn-color-normal {
+	background: #2e3d5c;
+}
+
+.btn-color-normal:hover {
+	background: #acd15f;
 }
