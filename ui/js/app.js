@@ -123,7 +123,7 @@
 
 	$( '#btnAdd' ).on( "click", function() {
 		var
-		repoId = 'r' + moment().unix(),
+		repoId = 'r' + moment().valueOf(),
 		defaultNoteInfo = {
 			rId: repoId,
 			title: '',
